@@ -7,12 +7,13 @@ A fully agentic personal AI assistant powered by **MCP (Model Context Protocol)*
 | Capability | Description |
 |---|---|
 | 🔍 Web Search | DuckDuckGo search, no API key needed |
-| 📁 File System | Read, write, and browse files |
-| 🐍 Code Execution | Run Python code in a sandboxed subprocess |
+| 📁 File System | Read/write/browse with root-path restrictions |
+| 🐍 Code Execution | Sandboxed Python execution with timeout + restricted operations |
 | 🧠 Memory | Persistent vector memory via ChromaDB |
-| 📅 Calendar | Local ICS calendar — list & add events |
+| 📅 Calendar | Local ICS + optional CalDAV/Google-compatible calendars |
 | 💬 Chat UI | Modern streaming React chat interface |
 | 🔀 Flexible LLM | OpenAI · Anthropic · Ollama — swap via `.env` |
+| 🔐 Safety | Optional API token auth + per-client rate limiting |
 
 ## Architecture
 
@@ -54,6 +55,11 @@ pip install -r requirements.txt
 cp .env.example .env
 # Edit .env — set LLM_PROVIDER and your API key
 ```
+
+Optional hardening:
+- Set `API_TOKEN` to require auth for chat requests.
+- Set `FILESYSTEM_ROOT` to limit file access to a safe directory.
+- Configure `CALDAV_*` values to connect a remote calendar.
 
 ### 3. Run
 
@@ -99,9 +105,12 @@ ai-assistant/
 ├── agent/               # Agent core
 │   ├── config.py        # Settings from .env
 │   ├── llm.py           # LLM provider abstraction
+│   ├── storage.py       # SQLite chat persistence
+│   ├── summarizer.py    # Conversation checkpoint summaries
 │   ├── tools_client.py  # MCP client
 │   └── loop.py          # ReAct agentic loop
 ├── api/                 # FastAPI backend
+│   ├── security.py      # API token + rate limiting
 │   └── routes/
 │       ├── chat.py      # REST + WebSocket endpoints
 │       └── health.py

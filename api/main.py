@@ -7,6 +7,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 
+from agent.config import settings
+from agent.storage import init_db
 from agent.tools_client import MCPToolsClient
 from api.routes import chat, health
 
@@ -15,6 +17,7 @@ mcp_client = MCPToolsClient()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    await init_db()
     await mcp_client.connect()
     app.state.mcp_client = mcp_client
     yield
@@ -30,7 +33,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[o.strip() for o in settings.allowed_origins.split(",") if o.strip()],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

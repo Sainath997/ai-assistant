@@ -25,7 +25,9 @@ export function useChat() {
 
   const connect = useCallback(() => {
     const protocol = window.location.protocol === "https:" ? "wss" : "ws";
-    const ws = new WebSocket(`${protocol}://${window.location.host}/api/ws/chat`);
+    const token = localStorage.getItem("apiToken") || "";
+    const tokenQuery = token ? `?token=${encodeURIComponent(token)}` : "";
+    const ws = new WebSocket(`${protocol}://${window.location.host}/api/ws/chat${tokenQuery}`);
 
     ws.onopen = () => setIsConnected(true);
     ws.onclose = () => {
