@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+.pytest_cache/
+
+# Env
+.env
+
+# Memory / DB
+memory/chroma_db/
+memory/calendar.ics
+
+# Node
+ui/node_modules/
+ui/dist/
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/

@@ -9,7 +9,7 @@ mcp==1.3.0
 # LLM providers (flexible - use any/all)
 openai==1.59.6
 anthropic==0.42.0
-ollama==0.4.4
+ollama>=0.4.4
 litellm==1.57.4
 
 # Agent & tool use
@@ -20,7 +20,7 @@ langchain-anthropic==0.3.3
 
 # Web search
 duckduckgo-search==7.3.0
-httpx==0.28.1
+httpx>=0.27.0,<0.28.0
 beautifulsoup4==4.12.3
 
 # File system & code execution
